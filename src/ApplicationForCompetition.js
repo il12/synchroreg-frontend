@@ -143,7 +143,7 @@ function ApplicationForCompetition(props) {
                 } else if (res.status === 401) {
                     navigate(`/login`,{replace: true})
                 } else {
-                    throw res.json()
+                    props.showAlert('error', 'Произошла ошибка, обратитесь к разработчику')
                 }
             })
             .then((response) => {
