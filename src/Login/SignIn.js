@@ -27,7 +27,7 @@ export default function SignIn(props) {
     }
 
     const sendData = (e) => {
-        fetch('/api/login', {
+        fetch('/api/auth/login', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

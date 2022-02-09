@@ -29,7 +29,7 @@ export default function SignUp(props) {
     }
 
     const sendData = (e) => {
-        fetch('/api/signup', {
+        fetch('/api/auth/signup', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

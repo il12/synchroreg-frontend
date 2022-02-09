@@ -168,9 +168,14 @@ function ApplicationForCompetition(props) {
                     props.showAlert('success', 'Заявка успешно подана')
                 } else if (res.status === 401) {
                     navigate(`/login`,{replace: true})
+                } else if (res.status === 409) {
+                    throw res.json();
                 } else {
-                    props.showAlert('error', 'При подаче заявки произошла ошибка, обратитесь к администратору')
+                    throw res.json();
                 }
+            })
+            .catch(async (err)=>{
+                props.showAlert('error',err.message)
             })
     }
 
