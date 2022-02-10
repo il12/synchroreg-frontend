@@ -1,37 +1,11 @@
-import React, {useEffect, useState} from "react";
-import Grid from "@mui/material/Grid";
+import React from "react";
 import Box from "@mui/material/Box";
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {
     Divider,
-    FormLabel,
-    IconButton,
-    Input, InputLabel,
-    ListItem,
-    ListItemText, Select,
-    Step,
-    StepContent,
-    StepLabel,
-    Stepper, TextField
 } from "@mui/material";
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import SendIcon from "@mui/icons-material/Send";
-import Paper from "@mui/material/Paper";
-import FormControl from "@mui/material/FormControl";
-import List from "@mui/material/List";
-import MenuItem from "@mui/material/MenuItem";
-import ruLocale from 'date-fns/locale/ru';
-import {formatDistance, parse, format} from 'date-fns'
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ApplicationPreview from "./ApplicationPreview";
 import CompetitionPreview from "./CompetitionPreview";
-import Container from "@mui/material/Container";
 import {useNavigate} from "react-router-dom";
 
 function Competition(props) {
@@ -50,12 +24,17 @@ function Competition(props) {
                 } else if (res.status === 401) {
                     navigate(`/login`,{replace: true})
                 } else {
-                    props.showAlert('error', 'Соревнование не удалено. Обратитесь к администратору')
+                    throw res.json()
                 }
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
             })
     }
 
     const downloadFile = () => {
+        props.showAlert('info','Файл TEAMS_SETUP.xlsx генерируется...')
         fetch(`/api/competition/${document.location.href.split('/')[4]}/finalize`, {
             credentials: "include"
         })
@@ -69,13 +48,15 @@ function Competition(props) {
                 }
             })
             .then((response) => {
-                console.log('download file start')
-                console.log(response);
                 let blob = new Blob([response], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
                 let link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
                 link.download = `TEAMS_SETUP.xlsx`;
                 link.click();
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
             })
     }
     return (

@@ -1,12 +1,7 @@
-import React, {useState, useEffect} from "react";
-import Grid from "@mui/material/Grid";
+import React, {useState} from "react";
 import Box from "@mui/material/Box";
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import Typography from "@mui/material/Typography";
-import {Divider, FormLabel, Input, InputLabel, TextareaAutosize, TextField} from "@mui/material";
+import {Divider, FormLabel, Input, TextField} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import SendIcon from '@mui/icons-material/Send';
@@ -59,8 +54,12 @@ function Competition(props) {
                 } else if (res.status === 401) {
                     navigate(`/login`,{replace: true})
                 } else {
-                    props.showAlert('error', 'Произошла ошибка, попробуйте снова или обратитесь к разработчику')
+                    throw res.json()
                 }
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
             })
     }
 

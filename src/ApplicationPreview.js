@@ -1,35 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import {
-    Divider,
-    FormLabel,
-    IconButton,
-    Input, InputLabel,
-    ListItem,
-    ListItemText, Select,
-    Step,
-    StepContent,
-    StepLabel,
-    Stepper, TextField
+    InputLabel,
+    Select,
 } from "@mui/material";
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import SendIcon from "@mui/icons-material/Send";
-import Paper from "@mui/material/Paper";
 import FormControl from "@mui/material/FormControl";
-import List from "@mui/material/List";
 import MenuItem from "@mui/material/MenuItem";
-import ruLocale from 'date-fns/locale/ru';
-import {formatDistance, parse, format} from 'date-fns'
-import AddTaskIcon from '@mui/icons-material/AddTask';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import application from "./Application";
 import Container from "@mui/material/Container";
 
 function ApplicationPreview(props) {
@@ -51,7 +28,6 @@ function ApplicationPreview(props) {
 
     const shouldRenderError = props.application.teamName ? false : 'Что-то пошло не так. Удалите заявку и создайте её заново'
 
-    console.log(props.application.teamName, shouldRenderError)
     return (
         shouldRenderError || <Container>
             <Typography variant={"h5"} textAlign={"center"}>
@@ -104,7 +80,7 @@ function ApplicationPreview(props) {
                         </Select>
                     </FormControl>
                     <ul>
-                        {props.application && freeRoutine != 'solo' &&
+                        {props.application && freeRoutine !== 'solo' &&
                             props.application?.free[freeRoutine]?.map((item) => {
                                 return <li>
                                     <ul>
@@ -114,7 +90,7 @@ function ApplicationPreview(props) {
                                     </ul>
                                 </li>
                             })}
-                        {props.application && freeRoutine == 'solo' &&
+                        {props.application && freeRoutine === 'solo' &&
                             props.application?.free[freeRoutine]?.map((item) => {
                                 return <li>{item.athlete.name}</li>
                             })}
@@ -139,7 +115,7 @@ function ApplicationPreview(props) {
                         </Select>
                     </FormControl>
                     <ul>
-                        {props.application && techRoutine != 'solo' && props.application?.tech[techRoutine]?.map((item) => {
+                        {props.application && techRoutine !== 'solo' && props.application?.tech[techRoutine]?.map((item) => {
                             return <li>
                                 <ul>
                                     {item.athletes.map((athlete) => {
@@ -148,7 +124,7 @@ function ApplicationPreview(props) {
                                 </ul>
                             </li>
                         })}
-                        {props.application && techRoutine == 'solo' &&
+                        {props.application && techRoutine === 'solo' &&
                             props.application?.tech[techRoutine]?.map((item) => {
                                 return <li>{item.athlete.name}</li>
                             })}

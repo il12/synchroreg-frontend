@@ -11,8 +11,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Paper from "@mui/material/Paper";
+import {useNavigate} from "react-router-dom";
 
 export default function SignUp(props) {
+    const navigate = useNavigate();
     const [user, setUser] = useState({
         login: "",
         password: "",
@@ -28,7 +30,7 @@ export default function SignUp(props) {
         })
     }
 
-    const sendData = (e) => {
+    const sendData = () => {
         fetch('/api/auth/signup', {
             method: 'POST',
             mode: 'cors',
@@ -48,8 +50,8 @@ export default function SignUp(props) {
                     throw res.json()
                 }
             })
-            .then(response => {
-                document.location.href = '/'
+            .then(() => {
+                navigate('/',{replace: true})
             })
             .catch(async (err)=>{
                 let error = await err
@@ -76,10 +78,7 @@ export default function SignUp(props) {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form sx={{
-                    width: '100%', // Fix IE 11 issue.
-                    marginTop: 3,
-                }} noValidate>
+                <form noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField

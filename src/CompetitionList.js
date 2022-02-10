@@ -1,21 +1,10 @@
 import React, {useEffect, useState} from "react";
 import './App.css';
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-    useMatch, useNavigate
+    useNavigate
 } from "react-router-dom";
-
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Grid from "@mui/material/Grid";
 import {Divider, ListItem, ListItemIcon, ListItemText} from "@mui/material";
 import List from "@mui/material/List";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
@@ -43,7 +32,10 @@ function CompetitionList(props) {
             .then((response) => {
                 response.data.sort((a, b) => a.deadline > b.deadline)
                 setList(response.data)
-
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
             })
     },[props.type])
 

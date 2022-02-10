@@ -11,8 +11,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper'
+import {useNavigate} from "react-router-dom";
 
 export default function SignIn(props) {
+    const navigate = useNavigate();
     const [user, setUser] = useState({
         login: "",
         password: ""
@@ -26,7 +28,7 @@ export default function SignIn(props) {
         })
     }
 
-    const sendData = (e) => {
+    const sendData = () => {
         fetch('/api/auth/login', {
             method: 'POST',
             mode: 'cors',
@@ -46,8 +48,8 @@ export default function SignIn(props) {
                     throw res.json()
                 }
             })
-            .then(response => {
-                document.location.href = '/'
+            .then(() => {
+                navigate('/',{replace: true})
             })
             .catch(async (err)=>{
                 let error = await err
