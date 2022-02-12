@@ -9,10 +9,11 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ruLocale from 'date-fns/locale/ru';
 import {formatDistance, parse, format} from 'date-fns'
 import {useNavigate} from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 function CompetitionPreview(props) {
     const [competition, setCompetition] = useState()
-    const [file, setFile] = useState(new ArrayBuffer(8))
+    const [downloadFileButton, setDownloadFileButton] = useState(false)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,6 +37,10 @@ function CompetitionPreview(props) {
                 props.showAlert("error", error.message)
             });
 
+    }, [])
+
+    const downloadFile = () => {
+        setDownloadFileButton(true)
         fetch(`/api/competition/${props.id}/file`, {
             credentials: "include"
         })
@@ -49,22 +54,19 @@ function CompetitionPreview(props) {
                 }
             })
             .then((response) => {
-                setFile(response)
+                let blob = new Blob([response], {type: "application/pdf"})
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `${competition.name}.pdf`;
+                link.click();
             })
             .catch(async (err) => {
                 let error = await err
                 props.showAlert("error", error.message)
             })
-    }, [])
-
-    const downloadFile = () => {
-        console.log('download file start')
-        console.log(file);
-        let blob = new Blob([file], {type: "application/pdf"})
-        let link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `${competition.name}.pdf`;
-        link.click();
+            .finally(()=>{
+                setDownloadFileButton(false)
+            })
     }
 
     return (
@@ -100,7 +102,8 @@ function CompetitionPreview(props) {
                         })</b>
                 </Typography>
                 <Divider component={'div'} variant={"fullWidth"} orientation={'horizontal'}/>
-                <Button
+                <LoadingButton
+                    loading={downloadFileButton}
                     size={'large'}
                     sx={{marginTop: 1}}
                     variant={'contained'}
@@ -108,7 +111,7 @@ function CompetitionPreview(props) {
                     onClick={downloadFile}
                 >
                     Скачать прикрепленный файл
-                </Button>
+                </LoadingButton>
             </Box>
         </Box>
     )

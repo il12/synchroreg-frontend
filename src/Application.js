@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ApplicationPreview from "./ApplicationPreview";
 import Container from "@mui/material/Container";
@@ -9,9 +9,11 @@ import {useNavigate} from "react-router-dom";
 function Application(props) {
     const [application, setApplication] = useState(false)
     const [competition, setCompetition] = useState(false)
+    const [deleteButtonLoading, setDeleteButtonLoading] = useState(false);
     const navigate = useNavigate();
 
     const deleteApplication = () => {
+        setDeleteButtonLoading(true);
         fetch(`/api/application/${document.location.href.split('/')[4]}`, {
             method: "DELETE",
             credentials: "include"
@@ -30,7 +32,9 @@ function Application(props) {
                 let error = await err
                 props.showAlert("error", error.message)
             })
-
+            .finally(()=>{
+                setDeleteButtonLoading(false);
+            })
     }
 
 
@@ -63,7 +67,8 @@ function Application(props) {
                 {competition?.name}
             </Typography>
             <ApplicationPreview sx={{flex: 1}} application={application}/>
-            <Button
+            <LoadingButton
+                loading={deleteButtonLoading}
                 size={'large'}
                 sx={{marginTop: "auto", marginBottom: theme => theme.spacing(1)}}
                 variant={'contained'}
@@ -72,7 +77,7 @@ function Application(props) {
                 color="error"
             >
                 Удалить заявку
-            </Button>
+            </LoadingButton>
         </Container>
     )
 

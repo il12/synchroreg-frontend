@@ -21,18 +21,21 @@ import AddTaskIcon from '@mui/icons-material/AddTask';
 import ApplicationPreview from "./ApplicationPreview";
 import CompetitionPreview from "./CompetitionPreview";
 import {useNavigate} from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 function ApplicationForCompetition(props) {
     const [tab, setTab] = React.useState('1');
     const [competition, setCompetition] = useState()
-    const [appFile, setAppFile] = useState(new ArrayBuffer(8))
     const [application, setApplication] = useState(false)
     const [activeStep, setActiveStep] = React.useState(0);
-    const [selectedFile, setSelectedFile] = useState();
+    const [applicationFile, setApplicationFile] = useState();
+    const [downloadApplicationTemplateButton, setDownloadApplicationTemplateButton] = useState(false)
+    const [saveApplicationButton, setSaveApplicationButton] = useState(false)
+    const [isApplicationCorrect, setIsApplicationCorrect] = useState(false);
     const navigate = useNavigate();
 
     const changeFileHandler = (event) => {
-        setSelectedFile(event.target.files[0]);
+        setApplicationFile(event.target.files[0]);
     };
 
     const handleTabChange = (event, newValue) => {
@@ -55,7 +58,7 @@ function ApplicationForCompetition(props) {
 
     const handleResetSteps = () => {
         setActiveStep(0);
-        setSelectedFile(null);
+        setApplicationFile(null);
     };
 
     useEffect(() => {
@@ -78,7 +81,67 @@ function ApplicationForCompetition(props) {
                 let error = await err
                 props.showAlert("error", error.message)
             })
+    }, [])
 
+    const parseApplicationFile = () => {
+        const formData = new FormData();
+        formData.append('application', applicationFile);
+        fetch(`/api/application/parse`, {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        })
+            .then(res => {
+                console.log(res)
+                if (res.status === 200) {
+                    return res.json()
+                } else if (res.status === 401) {
+                    navigate(`/login`,{replace: true})
+                } else {
+                    throw res.json();
+                }
+            })
+            .then((response) => {
+                setApplication(response)
+                setIsApplicationCorrect(true);
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
+            })
+    }
+
+    const sendApplication = () => {
+        setSaveApplicationButton(true)
+        const formData = new FormData();
+        formData.append('application', JSON.stringify(application));
+        formData.append('competition', document.location.href.split('/')[4])
+        formData.append('file', applicationFile);
+        fetch(`/api/application/save`, {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    props.showAlert('success', 'Заявка успешно подана')
+                } else if (res.status === 401) {
+                    navigate(`/login`,{replace: true})
+                } else {
+                    throw res.json();
+                }
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
+            })
+            .finally(()=>{
+                setSaveApplicationButton(false);
+            })
+    }
+
+    const downloadApplicationTemplateFile = () => {
+        setDownloadApplicationTemplateButton(true);
         fetch(`/api/application/template/get/${document.location.href.split('/')[4]}`, {
             credentials: "include"
         })
@@ -92,78 +155,19 @@ function ApplicationForCompetition(props) {
                 }
             })
             .then((response) => {
-                setAppFile(response)
+                let blob = new Blob([response], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `Заявка_${competition.name}.xlsx`;
+                link.click();
             })
             .catch(async (err)=>{
                 let error = await err
                 props.showAlert("error",error.message)
             })
-    }, [])
-
-    const parseApplicationFile = () => {
-        console.log("parsing");
-        const formData = new FormData();
-        formData.append('application', selectedFile);
-        console.log(formData.get('application'));
-        fetch(`/api/application/parse`, {
-            method: "POST",
-            credentials: "include",
-            body: formData
-        })
-            .then(res => {
-                console.log(res)
-                if (res.status === 200) {
-                    return res.json()
-                } else if (res.status === 401) {
-                    navigate(`/login`,{replace: true})
-                } else {
-                    props.showAlert('error', 'Произошла ошибка, обратитесь к разработчику')
-                }
+            .finally(()=> {
+                setDownloadApplicationTemplateButton(false)
             })
-            .then((response) => {
-                console.log(response);
-                setApplication(response)
-            })
-            .catch(async (err) => {
-                let error = await err
-                props.showAlert("error", error.message)
-            })
-    }
-
-    const sendApplication = () => {
-        const formData = new FormData();
-        formData.append('application', JSON.stringify(application));
-        formData.append('competition', document.location.href.split('/')[4])
-        formData.append('file', selectedFile);
-        fetch(`/api/application/save`, {
-            method: "POST",
-            credentials: "include",
-            body: formData
-        })
-            .then(res => {
-                console.log(res)
-                if (res.status === 200) {
-                    props.showAlert('success', 'Заявка успешно подана')
-                } else if (res.status === 401) {
-                    navigate(`/login`,{replace: true})
-                } else {
-                    throw res.json();
-                }
-            })
-            .catch(async (err) => {
-                let error = await err
-                props.showAlert("error", error.message)
-            })
-    }
-
-    const downloadApplicationFile = () => {
-        console.log('download file start')
-        console.log(appFile);
-        let blob = new Blob([appFile], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
-        let link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `Заявка_${competition.name}.xlsx`;
-        link.click();
     }
 
     return (
@@ -194,15 +198,16 @@ function ApplicationForCompetition(props) {
                                     <Typography>
                                         Скачайте файл заявки, нажав на кнопку ниже.
                                     </Typography>
-                                    <Button
+                                    <LoadingButton
+                                        loading={downloadApplicationTemplateButton}
                                         size={'large'}
                                         sx={{marginTop: 4}}
                                         variant={'contained'}
                                         endIcon={<InsertDriveFileIcon/>}
-                                        onClick={downloadApplicationFile}
+                                        onClick={downloadApplicationTemplateFile}
                                     >
                                         Скачать файл заявки
-                                    </Button>
+                                    </LoadingButton>
                                     <Box sx={{mb: 2}}>
                                         <div>
                                             <Button
@@ -271,6 +276,7 @@ function ApplicationForCompetition(props) {
                                     <Box sx={{mb: 2}}>
                                         <div>
                                             <Button
+                                                disabled={!isApplicationCorrect}
                                                 variant="contained"
                                                 onClick={handleNextStep}
                                                 sx={{mt: 1, mr: 1}}
@@ -306,17 +312,17 @@ function ApplicationForCompetition(props) {
                          sx={{height: '100%'}}
                     >
                         <ApplicationPreview application={application}/>
-                        <Button
+                        <LoadingButton
+                            loading={saveApplicationButton}
                             size={'large'}
                             sx={{marginTop: "auto", marginBottom: 1}}
                             variant={'contained'}
                             endIcon={<AddTaskIcon/>}
                             onClick={sendApplication}
-                            disabled={!selectedFile}
                             color="success"
                         >
                             Подтвердить подачу заявки
-                        </Button>
+                        </LoadingButton>
                     </Box>
                 </TabPanel>
             </TabContext>
