@@ -30,8 +30,10 @@ function ApplicationList(props) {
                 }
             })
             .then((response) => {
-                response.data.sort((a, b) => a.deadline > b.deadline)
-                setList(response.data)
+                if(response) {
+                    response.data.sort((a, b) => a.deadline > b.deadline)
+                    setList(response.data)
+                }
             })
             .catch(async (err) => {
                 let error = await err

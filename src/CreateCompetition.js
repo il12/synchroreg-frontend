@@ -47,7 +47,6 @@ function Competition(props) {
             body: formData
         })
             .then(res => {
-                console.log(res)
                 if (res.status === 200) {
                     props.showAlert('success', 'Соревнование успешно создано')
                     navigate(`/competition/my`,{replace: true})
