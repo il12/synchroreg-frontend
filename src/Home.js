@@ -3,39 +3,24 @@ import './App.css';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
-
-import HomeIcon from "@mui/icons-material/Home"
 import ListIcon from "@mui/icons-material/List"
 import AddIcon from "@mui/icons-material/Add"
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Content from "./ApplicationForCompetition";
 import {Outlet, useNavigate} from "react-router-dom";
 import {Box, Collapse, Divider, IconButton} from "@mui/material";
-import Grid from "@mui/material/Grid";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import MenuIcon from '@mui/icons-material/Menu';
+import LoginController from "./LoginController";
 
 function Home(props) {
     let navigate = useNavigate();
-    const [open, setOpen] = useState()
+    const [open, setOpen] = useState(true)
 
     const handleDrawerOpen = () => {
         setOpen(!open);
@@ -65,9 +50,18 @@ function Home(props) {
                             <MenuIcon sx={{color: 'white.main'}}/>
                         </IconButton>
                     </Box>
-                    <Typography variant="h6">
-                        Система регистрации на соревнования по синхронному плаванию
-                    </Typography>
+                    <Box sx={{
+                        width: 'auto',
+                        flexGrow: 1,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Typography variant="h6">
+                            Система регистрации на соревнования по синхронному плаванию
+                        </Typography>
+                        <LoginController />
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -86,7 +80,7 @@ function Home(props) {
             >
                 <List sx={{overflowX: 'hidden'}}>
                     <Toolbar/>
-                    <ListItem button key={"Create"} onClick={() => navigate('/competition/new',{replace: true})}>
+                    <ListItem button key={"Create"} onClick={() => navigate('/competition/new', {replace: true})}>
                         <ListItemIcon>
                             <AddIcon/>
                         </ListItemIcon>
@@ -94,15 +88,15 @@ function Home(props) {
                             <ListItemText primary={"Создать соревнование"}/>
                         </Collapse>
                     </ListItem>
-                    <ListItem button key={"Active"} onClick={() => navigate('/competition',{replace: true})}>
+                    <ListItem button key={"Active"} onClick={() => navigate('/competition', {replace: true})}>
                         <ListItemIcon>
-                            <EmojiEventsIcon  sx={{color: 'gold.main'}}/>
+                            <EmojiEventsIcon sx={{color: 'gold.main'}}/>
                         </ListItemIcon>
                         <Collapse in={open} orientation={'horizontal'}>
                             <ListItemText primary={"Активные соревнования"}/>
                         </Collapse>
                     </ListItem>
-                    <ListItem button key={"Past"} onClick={() => navigate('/competition/past',{replace: true})}>
+                    <ListItem button key={"Past"} onClick={() => navigate('/competition/past', {replace: true})}>
                         <ListItemIcon>
                             <EmojiEventsIcon/>
                         </ListItemIcon>
@@ -110,7 +104,7 @@ function Home(props) {
                             <ListItemText primary={"Прошедшие соревнования"}/>
                         </Collapse>
                     </ListItem>
-                    <ListItem button key={"CompMy"} onClick={() => navigate('/competition/my',{replace: true})}>
+                    <ListItem button key={"CompMy"} onClick={() => navigate('/competition/my', {replace: true})}>
                         <ListItemIcon>
                             <ListIcon/>
                         </ListItemIcon>
@@ -118,7 +112,7 @@ function Home(props) {
                             <ListItemText primary={"Мои соревнования"}/>
                         </Collapse>
                     </ListItem>
-                    <ListItem button key={"AppMy"} onClick={() => navigate('/application/my',{replace: true})}>
+                    <ListItem button key={"AppMy"} onClick={() => navigate('/application/my', {replace: true})}>
                         <ListItemIcon>
                             <AppRegistrationIcon/>
                         </ListItemIcon>
@@ -147,7 +141,7 @@ function Home(props) {
                     <Box flex={{xs: 12, sm: 2}} sx={{display: "flex", flexDirection: "column"}}>
                         <List>
                             <ListItem key={'forsale'}>
-                                <ListItemText primary={"Блок рекламы"}/>
+                                <ListItemText primary={"Здесь могла бы быть ваша реклама"}/>
                             </ListItem>
                         </List>
                     </Box>
