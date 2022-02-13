@@ -10,7 +10,7 @@ function LoginController() {
     const [user, setUser] = useState(getCookie('userid'));
     const navigate = useNavigate();
     const logout = () => {
-        fetch('/api/auth/logout')
+        fetch('/api/auth/logout', { credentials: 'same-origin' })
             .then(() => {
                 deleteCookie('userid');
                 setUser(getCookie('userid'));
