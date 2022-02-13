@@ -135,7 +135,6 @@ export default function SignUp(props) {
                         </Grid>
                         <Grid item xs={12}>
                             <Button
-                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
