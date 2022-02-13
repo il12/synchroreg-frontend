@@ -1,17 +1,19 @@
-import {getCookie} from "./helpers";
+import {getCookie, deleteCookie} from "./helpers";
 import {Box} from "@mui/material";
 import Button from "@mui/material/Button";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 function LoginController() {
-    const user = getCookie('userid');
+    const [user, setUser] = useState(getCookie('userid'));
     const navigate = useNavigate();
     const logout = () => {
         fetch('/api/auth/logout')
             .then(() => {
+                deleteCookie('userid');
+                setUser(getCookie('userid'));
                 navigate('/', {replace: true})
             })
     }
