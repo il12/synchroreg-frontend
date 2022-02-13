@@ -45,13 +45,10 @@ export default function SignUp(props) {
         })
             .then((res) => {
                 if(res.status === 200){
-                    return res.json()
+                    navigate('/',{replace: true})
                 } else {
                     throw res.json()
                 }
-            })
-            .then(() => {
-                navigate('/',{replace: true})
             })
             .catch(async (err)=>{
                 let error = await err
