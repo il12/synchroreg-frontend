@@ -84,8 +84,9 @@ function ApplicationForCompetition(props) {
     }, [])
 
     const parseApplicationFile = () => {
+        console.log(applicationFile);
         const formData = new FormData();
-        formData.append('application', applicationFile);
+        formData.append('file', applicationFile);
         fetch(`/api/application/parse`, {
             method: "POST",
             credentials: "include",
@@ -276,7 +277,6 @@ function ApplicationForCompetition(props) {
                                     <Box sx={{mb: 2}}>
                                         <div>
                                             <Button
-                                                disabled={!isApplicationCorrect}
                                                 variant="contained"
                                                 onClick={handleNextStep}
                                                 sx={{mt: 1, mr: 1}}

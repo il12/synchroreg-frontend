@@ -115,7 +115,7 @@ function Competition(props) {
                 />
             </LocalizationProvider>
             <FormControl sx={{marginTop: 2}} variant={'filled'} fullWidth>
-                <FormLabel id="file-label">При необходимости добавьте файлы .docx, которые будут отображаться в
+                <FormLabel id="file-label">При необходимости добавьте файлы .pdf, которые будут отображаться в
                     описании соревнования</FormLabel>
                 <Input
                     variant={'outlined'}
