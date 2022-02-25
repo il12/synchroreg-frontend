@@ -56,7 +56,7 @@ function App() {
         })
         setIsSnackbarOpen(true);
     }
-/*
+    
     return (
         <ThemeProvider theme={theme}>
             <Router>
@@ -114,10 +114,6 @@ function App() {
             </Snackbar>
         </ThemeProvider>
     );
- */
-    return(
-        <Typography variant={'h1'}>Проект был закрыт в связи с военным вторжением России в Украину</Typography>
-    )
 }
 
 export default App;
