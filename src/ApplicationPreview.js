@@ -119,7 +119,7 @@ function ApplicationPreview(props) {
                             return <li>
                                 <ul>
                                     {item.athletes.map((athlete) => {
-                                        return <li>{athlete.name} {athlete.isReserve ? "(Р)" : null}</li>
+                                        return <li>{athlete.name.family} &nbsp; {athlete.name.name} {athlete.isReserve ? "(Р)" : null}</li>
                                     })}
                                 </ul>
                             </li>

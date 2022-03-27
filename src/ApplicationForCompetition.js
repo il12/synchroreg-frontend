@@ -22,6 +22,7 @@ import ApplicationPreview from "./ApplicationPreview";
 import CompetitionPreview from "./CompetitionPreview";
 import {useNavigate} from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
+import AddIcon from "@mui/icons-material/Add";
 
 function ApplicationForCompetition(props) {
     const [tab, setTab] = React.useState('1');
@@ -180,9 +181,9 @@ function ApplicationForCompetition(props) {
             <TabContext value={tab}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <TabList variant="fullWidth" onChange={handleTabChange} aria-label="Tabs labels">
-                        <Tab label="Info" value="1"/>
-                        <Tab label="Application" value="2"/>
-                        <Tab label="Preview" value="3" disabled={!application}/>
+                        <Tab label="Инфо" value="1"/>
+                        <Tab label="Подать заявку" value="2"/>
+                        <Tab label="Предпросмотр" value="3" disabled={!application}/>
                     </TabList>
                 </Box>
                 <TabPanel value="1" sx={{flex: 1}}>
@@ -296,7 +297,7 @@ function ApplicationForCompetition(props) {
                         </Stepper>
                         {activeStep === 3 && (
                             <Paper square elevation={0} sx={{p: 3}}>
-                                <Typography>Проверьте и подтвердите заявку на вкладке Preview. После этого вы не сможете
+                                <Typography>Проверьте и подтвердите заявку на вкладке Предпросмотр. После этого вы не сможете
                                     изменить свою заявку.</Typography>
                                 <Button onClick={handleResetSteps} sx={{mt: 1, mr: 1}}>
                                     Сброс

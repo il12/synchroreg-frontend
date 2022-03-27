@@ -13,6 +13,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 function Competition(props) {
     let navigate = useNavigate();
+    let [judgesListButton, setJudgesListButton] = useState(false);
+    let [athletesListButton, setAthletesListButton] = useState(false);
     let [teamSetupButton, setTeamSetupButton] = useState(false);
     let [deleteCompetitionButton, setDeleteCompetitionButton] = useState(false);
 
@@ -41,7 +43,7 @@ function Competition(props) {
             })
     }
 
-    const downloadFile = () => {
+    const downloadTeamSetup = () => {
         setTeamSetupButton(true);
         props.showAlert('info','Файл TEAMS_SETUP.xlsx генерируется...')
         fetch(`/api/competition/${document.location.href.split('/')[4]}/finalize`, {
@@ -71,6 +73,70 @@ function Competition(props) {
                 setTeamSetupButton(false)
             })
     }
+
+    const downloadAthletesList = () => {
+        setAthletesListButton(true);
+        props.showAlert('info','Список спортсменов генерируется...')
+        fetch(`/api/competition/${document.location.href.split('/')[4]}/athletes`, {
+            credentials: "include"
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    return res.arrayBuffer()
+                } else if (res.status === 401) {
+                    navigate(`/login`,{replace: true})
+                } else {
+                    throw res.json()
+                }
+            })
+            .then((response) => {
+                let blob = new Blob([response], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `${document.location.href.split('/')[4]}_athletes.xlsx`;
+                link.click();
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
+            })
+            .finally(()=>{
+                setAthletesListButton(false)
+            })
+    }
+
+
+    const downloadJudgesList = () => {
+        setJudgesListButton(true);
+        props.showAlert('info','Список судей генерируется...')
+        fetch(`/api/competition/${document.location.href.split('/')[4]}/judges`, {
+            credentials: "include"
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    return res.arrayBuffer()
+                } else if (res.status === 401) {
+                    navigate(`/login`,{replace: true})
+                } else {
+                    throw res.json()
+                }
+            })
+            .then((response) => {
+                let blob = new Blob([response], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `${document.location.href.split('/')[4]}_judges.xlsx`;
+                link.click();
+            })
+            .catch(async (err) => {
+                let error = await err
+                props.showAlert("error", error.message)
+            })
+            .finally(()=>{
+                setJudgesListButton(false)
+            })
+    }
+
     return (
         <Box display="flex"
              flex={1}
@@ -106,10 +172,34 @@ function Competition(props) {
                     sx={{marginLeft: 4}}
                     variant={'contained'}
                     endIcon={<DownloadIcon/>}
-                    onClick={downloadFile}
+                    onClick={downloadTeamSetup}
                     color="primary"
                 >
                     Скачать TEAMS_SETUP
+                </LoadingButton>
+
+                <LoadingButton
+                    loading={athletesListButton}
+                    size={'large'}
+                    sx={{marginLeft: 4}}
+                    variant={'contained'}
+                    endIcon={<DownloadIcon/>}
+                    onClick={downloadAthletesList}
+                    color="primary"
+                >
+                    Скачать список участников
+                </LoadingButton>
+
+                <LoadingButton
+                    loading={judgesListButton}
+                    size={'large'}
+                    sx={{marginLeft: 4}}
+                    variant={'contained'}
+                    endIcon={<DownloadIcon/>}
+                    onClick={downloadJudgesList}
+                    color="primary"
+                >
+                    Скачать список судей
                 </LoadingButton>
             </Box>
         </Box>
