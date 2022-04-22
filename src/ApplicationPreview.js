@@ -85,14 +85,14 @@ function ApplicationPreview(props) {
                                 return <li>
                                     <ul>
                                         {item.athletes.map((athlete) => {
-                                            return <li>{athlete.name} {athlete.isReserve ? "(Р)" : null}</li>
+                                            return <li>{athlete.family}&nbsp;{athlete.name} {athlete.isReserve ? "(Р)" : null}</li>
                                         })}
                                     </ul>
                                 </li>
                             })}
                         {props.application && freeRoutine === 'solo' &&
                             props.application?.free[freeRoutine]?.map((item) => {
-                                return <li>{item.athlete.name}</li>
+                                return <li>{item.athlete.family}&nbsp;{item.athlete.name}</li>
                             })}
                     </ul>
                 </Grid>
@@ -119,14 +119,15 @@ function ApplicationPreview(props) {
                             return <li>
                                 <ul>
                                     {item.athletes.map((athlete) => {
-                                        return <li>{athlete.name.family} &nbsp; {athlete.name.name} {athlete.isReserve ? "(Р)" : null}</li>
+                                        console.log(athlete);
+                                        return <li>{athlete.family}&nbsp;{athlete.name} {athlete.isReserve ? "(Р)" : null}</li>
                                     })}
                                 </ul>
                             </li>
                         })}
                         {props.application && techRoutine === 'solo' &&
                             props.application?.tech[techRoutine]?.map((item) => {
-                                return <li>{item.athlete.name}</li>
+                                return <li>{item.athlete.family}&nbsp;{item.athlete.name}</li>
                             })}
                     </ul>
                 </Grid>
