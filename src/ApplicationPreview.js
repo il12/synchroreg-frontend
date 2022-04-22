@@ -54,7 +54,7 @@ function ApplicationPreview(props) {
                     <ul>
                         {props.application && figures && props.application?.figures[figures]?.map((item) => {
                             return <li>
-                                {item.name}
+                                {item.family}&nbsp;{item.name}
                             </li>
                         })}
                     </ul>
