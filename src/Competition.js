@@ -143,7 +143,7 @@ function Competition(props) {
              flexDirection='column'
              sx={{height: '100%'}}
         >
-            <CompetitionPreview id={document.location.href.split('/')[4]}/>
+            <CompetitionPreview id={document.location.href.split('/')[4]} showAlert={props.showAlert}/>
             <Divider variant={"fullWidth"} orientation={'horizontal'} sx={{marginBottom: 2}}/>
             <Box sx={{marginTop: "auto", marginBottom: 1, display: 'flex', justifyContent: 'center'}}>
                 <LoadingButton

@@ -22,7 +22,6 @@ import ApplicationPreview from "./ApplicationPreview";
 import CompetitionPreview from "./CompetitionPreview";
 import {useNavigate} from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
-import AddIcon from "@mui/icons-material/Add";
 
 function ApplicationForCompetition(props) {
     const [tab, setTab] = React.useState('1');
@@ -187,7 +186,7 @@ function ApplicationForCompetition(props) {
                     </TabList>
                 </Box>
                 <TabPanel value="1" sx={{flex: 1}}>
-                    <CompetitionPreview id={document.location.href.split('/')[4]}/>
+                    <CompetitionPreview id={document.location.href.split('/')[4]} showAlert={props.showAlert}/>
                 </TabPanel>
                 <TabPanel value="2" sx={{height: "100%"}}>
                     <Box sx={{height: '100%'}}>
