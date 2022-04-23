@@ -26,7 +26,6 @@ function Competition(props) {
     };
 
     const handleCompetitionChange = (event) => {
-        console.log(event.target);
         setCompetition((state) => {
             let newState = Object.assign({}, state);
             newState[event.target.id || event.target.name] = event.target.value;

@@ -17,13 +17,22 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginController from "./LoginController";
+import {getCookie} from "./helpers";
 
 function Home(props) {
     let navigate = useNavigate();
     const [open, setOpen] = useState(true)
-
+    const access = getCookie('accessLevel');
     const handleDrawerOpen = () => {
         setOpen(!open);
+    }
+
+    const createCompetition = () => {
+        if (access >= 1) {
+            navigate('/competition/new', {replace: true})
+        } else {
+            props.showAlert('error', 'У вас недостаточно прав для создания соревнований. Обратитесь к разработчику по e-mail: il5498@yandex.ru')
+        }
     }
 
     return (
@@ -60,7 +69,7 @@ function Home(props) {
                         <Typography variant="h6">
                             Система регистрации на соревнования по синхронному плаванию
                         </Typography>
-                        <LoginController />
+                        <LoginController/>
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -80,7 +89,7 @@ function Home(props) {
             >
                 <List sx={{overflowX: 'hidden'}}>
                     <Toolbar/>
-                    <ListItem button key={"Create"} onClick={() => navigate('/competition/new', {replace: true})}>
+                    <ListItem button key={"Create"} onClick={createCompetition}>
                         <ListItemIcon>
                             <AddIcon/>
                         </ListItemIcon>
