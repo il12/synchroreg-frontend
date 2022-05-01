@@ -22,7 +22,7 @@ import {getCookie} from "./helpers";
 function Home(props) {
     let navigate = useNavigate();
     const [open, setOpen] = useState(true)
-    const access = getCookie('accessLevel');
+    const access = getCookie('access');
     const handleDrawerOpen = () => {
         setOpen(!open);
     }
@@ -66,7 +66,7 @@ function Home(props) {
                         flexDirection: 'row',
                         justifyContent: 'space-between'
                     }}>
-                        <Typography variant="h6">
+                        <Typography sx={{display: {xs: 'none', md: 'block'}}} variant="h6">
                             Система регистрации на соревнования по синхронному плаванию
                         </Typography>
                         <LoginController/>
