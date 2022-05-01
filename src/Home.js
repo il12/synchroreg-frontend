@@ -143,11 +143,11 @@ function Home(props) {
                      flex={1}
                      flexDirection={{sm: "row"}}
                 >
-                    <Box flex={{xs: 12, sm: 9}}>
+                    <Box flex={{xs: 12, md: 9}}>
                         <Outlet/>
                     </Box>
                     <Divider/>
-                    <Box flex={{xs: 12, sm: 2}} sx={{display: "flex", flexDirection: "column"}}>
+                    <Box flex={{xs: 12, md: 2}} sx={{display: {xs: 'none', md: "flex"}, flexDirection: "column"}}>
                         <List>
                             <ListItem key={'forsale'}>
                                 <ListItemText primary={"Здесь могла бы быть ваша реклама"}/>
