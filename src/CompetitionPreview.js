@@ -66,17 +66,17 @@ function CompetitionPreview(props) {
             return application.teamName;
         })
         const athletesCount = applications.reduce((accumulator, application) => {
-            return accumulator += application.athletes.length;
+            return accumulator += Number(application.athletes.length);
         }, 0)
         const staffCount = applications.reduce((accumulator, application) => {
-            return accumulator += application.staff.length;
+            return accumulator += Number(application.staff.length);
         }, 0)
         const routinesCount = applications.reduce((accumulator, application) => {
             for (const routine in application.free) {
-                accumulator.free[routine] += application.free[routine].length;
+                accumulator.free[routine] += Number(application.free[routine].length);
             }
             for (const routine in application.tech) {
-                accumulator.tech[routine] += application.tech[routine].length;
+                accumulator.tech[routine] += Number(application.tech[routine].length);
             }
             return accumulator;
         }, {
