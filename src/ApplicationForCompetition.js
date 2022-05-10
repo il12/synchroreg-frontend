@@ -35,7 +35,12 @@ function ApplicationForCompetition(props) {
     const navigate = useNavigate();
 
     const changeFileHandler = (event) => {
-        setApplicationFile(event.target.files[0]);
+        if(event.target.files[0].type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            setApplicationFile(event.target.files[0]);
+        } else {
+            props.showAlert('error', 'Пожалуйста, загружайте исключительно ".xlsx" файлы.');
+            event.target.value = null;
+        }
     };
 
     const handleTabChange = (event, newValue) => {
