@@ -35,7 +35,7 @@ function ApplicationForCompetition(props) {
     const navigate = useNavigate();
 
     const changeFileHandler = (event) => {
-        if(event.target.files[0].type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        if (event.target.files[0].type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
             setApplicationFile(event.target.files[0]);
         } else {
             props.showAlert('error', 'Пожалуйста, загружайте исключительно ".xlsx" файлы.');
@@ -74,7 +74,7 @@ function ApplicationForCompetition(props) {
                 if (res.status === 200) {
                     return res.json()
                 } else if (res.status === 401) {
-                    navigate(`/login`,{replace: true})
+                    navigate(`/login`, {replace: true})
                 } else {
                     throw res.json()
                 }
@@ -102,7 +102,7 @@ function ApplicationForCompetition(props) {
                 if (res.status === 200) {
                     return res.json()
                 } else if (res.status === 401) {
-                    navigate(`/login`,{replace: true})
+                    navigate(`/login`, {replace: true})
                 } else {
                     throw res.json();
                 }
@@ -132,7 +132,7 @@ function ApplicationForCompetition(props) {
                 if (res.status === 200) {
                     props.showAlert('success', 'Заявка успешно подана')
                 } else if (res.status === 401) {
-                    navigate(`/login`,{replace: true})
+                    navigate(`/login`, {replace: true})
                 } else {
                     throw res.json();
                 }
@@ -141,7 +141,7 @@ function ApplicationForCompetition(props) {
                 let error = await err
                 props.showAlert("error", error.message)
             })
-            .finally(()=>{
+            .finally(() => {
                 setSaveApplicationButton(false);
             })
     }
@@ -155,7 +155,7 @@ function ApplicationForCompetition(props) {
                 if (res.status === 200) {
                     return res.arrayBuffer()
                 } else if (res.status === 401) {
-                    navigate(`/login`,{replace: true})
+                    navigate(`/login`, {replace: true})
                 } else {
                     throw res.json()
                 }
@@ -167,11 +167,11 @@ function ApplicationForCompetition(props) {
                 link.download = `Заявка_${competition.name}.xlsx`;
                 link.click();
             })
-            .catch(async (err)=>{
+            .catch(async (err) => {
                 let error = await err
-                props.showAlert("error",error.message)
+                props.showAlert("error", error.message)
             })
-            .finally(()=> {
+            .finally(() => {
                 setDownloadApplicationTemplateButton(false)
             })
     }
@@ -242,6 +242,17 @@ function ApplicationForCompetition(props) {
                                     <Typography>
                                         Заполните загруженный файл заявки.
                                     </Typography>
+                                    <div style={{padding: '5px', border: '2px solid red'}}>
+                                        <Typography>
+                                            Комментарий от разработчика
+                                        </Typography>
+                                        <Typography>
+                                            <p>Пожалуйста, сохраняйте структуру документа. Не удаляйте строки/столбцы.<br/>
+                                            Заполняйте все поля, которые есть в документе.<br/>
+                                            Не меняйте расширение файла!<br/>
+                                            В случае проблем в документе, система выдаст подсказку в левом нижнем углу.</p>
+                                        </Typography>
+                                    </div>
                                     <Box sx={{mb: 2}}>
                                         <div>
                                             <Button
@@ -301,7 +312,8 @@ function ApplicationForCompetition(props) {
                         </Stepper>
                         {activeStep === 3 && (
                             <Paper square elevation={0} sx={{p: 3}}>
-                                <Typography>Проверьте и подтвердите заявку на вкладке Предпросмотр. После этого вы не сможете
+                                <Typography>Проверьте и подтвердите заявку на вкладке Предпросмотр. После этого вы не
+                                    сможете
                                     изменить свою заявку.</Typography>
                                 <Button onClick={handleResetSteps} sx={{mt: 1, mr: 1}}>
                                     Сброс

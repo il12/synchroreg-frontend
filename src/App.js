@@ -18,8 +18,7 @@ import CompetitionList from "./CompetitionList";
 import ApplicationList from "./ApplicationList";
 import Application from "./Application";
 import Competition from "./Competition";
-import Typography from "@mui/material/Typography";
-
+import {vars} from "./const/vars.js"
 
 function App() {
 
@@ -56,7 +55,7 @@ function App() {
         })
         setIsSnackbarOpen(true);
     }
-    
+
     return (
         <ThemeProvider theme={theme}>
             <Router>
@@ -107,7 +106,7 @@ function App() {
                     </Route>
                 </Routes>
             </Router>
-            <Snackbar open={isSnackbarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
+            <Snackbar open={isSnackbarOpen} autoHideDuration={vars.ALERT_TIME} onClose={handleSnackbarClose}>
                 <Alert variant="filled" severity={notificationState.type} closeFunction={handleSnackbarClose}>
                     {notificationState.text}
                 </Alert>
